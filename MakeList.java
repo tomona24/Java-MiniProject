@@ -34,7 +34,6 @@ public class MakeList {
     private void setCityName () {
         Random rand = new Random();
             int line = rand.nextInt(getCityList().length);
-             System.out.println(line);
             this.cityName = this.cityList[line];
         }
 

@@ -5,22 +5,18 @@ public class Question {
     private String cityName;
     private String[] answer;
     private String[] lettersList;
-    private static int counter;
     private static int correctNum;
+    private String wrongLetters;
 
     // constructor
     public Question() {
         this.cityName = new MakeList().getCityName();
         setLettersList(this.cityName);
         this.answer = new String[this.cityName.length()];
-        this.counter = 0;
+        this.wrongLetters = "";
     }
 
     // setter
-//    private void setCity(String[] Arr) {
-//        this.city = Arr[wholeList.getLineCounter()];
-//    }
-
     private void setLettersList(String cityName) {
         this.lettersList = new String[cityName.length()];
         for (int i = 0; i < cityName.length(); i++) {
@@ -30,6 +26,12 @@ public class Question {
 
     private void setAnswer(String letter, int num) {
         this.answer[num] = letter;
+    }
+
+    private void setWrongLetters(String letter) {
+        if (this.wrongLetters.indexOf(letter) == -1) {
+            this.wrongLetters += letter + " ";
+        }
     }
 
     // getter
@@ -45,6 +47,26 @@ public class Question {
         return answer;
     }
 
+    public String getWrongLetters() {
+        return wrongLetters;
+    }
+
+    public int getAmountOfWrong() {
+        int amount = 0;
+        for (int i = 0; i < getWrongLetters().length(); i++) {
+            if (getWrongLetters().length() > 0) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+
+
+    public int getCorrectNum() {
+        return correctNum;
+    }
+
+
     // method
     public void showHiddenQuiz() {
         for (int i = 0; i < getCity().length(); i++) {
@@ -58,24 +80,32 @@ public class Question {
     }
 
     public void changeAnswer(String letter) {
+        int num = 0;
         for (int k = 0; k < getLettersList().length; k++) {
             if (getLettersList()[k].equals(letter)) {
                 setAnswer(letter, k);
+                num++;
             }
+        }
+        if (num == 0) {
+            setWrongLetters(letter);
         }
     }
 
     public void askAnswer() {
-        while (counter < 10) {
-            if (correctNum == getCity().length()) {
+        while (getWrongLetters().length() / 2 < 10) {
+            if (getCorrectNum() == getCity().length()) {
                 break;
             }
-            showHiddenQuiz();
             changeAnswer(inputLetter());
-            counter++;
             correctCheck();
+            System.out.print("You are guessing : ");
+            showHiddenQuiz();
+            System.out.println("You have guessed (" + getAmountOfWrong() / 2 + ") wrong letters : " + getWrongLetters());
+
+
         }
-        if (correctNum == getCity().length()) {
+        if (getCorrectNum() == getCity().length()) {
             gameClear();
         } else {
             gameOver();
@@ -111,7 +141,7 @@ public class Question {
                 System.out.println("Please type just 1 letter!");
             }
             Scanner in = new Scanner(System.in);
-            System.out.println("Guess a letter.");
+            System.out.print("Guess a letter : ");
             letter = in.nextLine();
         } while (letter.length() != 1);
         return letter;
