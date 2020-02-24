@@ -8,6 +8,10 @@ public class Driver {
         Question c = new Question();
         System.out.println("Here's a question!");
         c.askAnswer();
+
+//        MakeList a = new MakeList();
+//        System.out.println(a.getCityName());
+
     }
 
 }

@@ -8,12 +8,9 @@ public class Question {
     private static int counter;
     private static int correctNum;
 
-//    MakeList wholeList = new MakeList();
-
     // constructor
     public Question() {
-//      setCity(wholeList.cityList);
-        this.cityName = "vancouver";
+        this.cityName = new MakeList().getCityName();
         setLettersList(this.cityName);
         this.answer = new String[this.cityName.length()];
         this.counter = 0;

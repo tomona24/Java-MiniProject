@@ -1,41 +1,40 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class MakeList {
-    public static int lineCounter = 0;
-    public String[] cityList;
-    private Scanner in;
+    private String[] cityList;
+    private String cities;
     private String cityName;
 
     // constructor
     public MakeList() {
+        this.cities = "";
         setCityList();
-        setCityName(lineCounter);
+        setCityName();
     }
 
 
     // Setter
     private void setCityList () {
         try {
-            File f = new File("cities.txt");
-            this.in = new Scanner(f);
+            String filename = "cities.txt";
+            File f = new File(filename);
+            Scanner in = new Scanner(f);
             while (in.hasNextLine()) {
-                lineCounter++;
-            }
-            this.cityList = new String[lineCounter];
-            int counter = 0;
-            while (in.hasNextLine()) {
-                this.cityList[counter] = in.nextLine();
-                counter++;
+                this.cities += in.nextLine() + ",";
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        this.cityList = getCities().split(",");
     }
 
-    private void setCityName (int lineCounter) {
-            int line = (int) Math.random() * lineCounter;
+    private void setCityName () {
+        Random rand = new Random();
+            int line = rand.nextInt(getCityList().length);
+             System.out.println(line);
             this.cityName = this.cityList[line];
         }
 
@@ -43,8 +42,6 @@ public class MakeList {
     public String[] getCityList() {
         return cityList;
     }
-    public int getLineCounter() {
-        return lineCounter;
-    }
     public String getCityName() {return cityName;}
+    public String getCities() {return cities;}
 }
