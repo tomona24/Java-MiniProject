@@ -3,9 +3,10 @@ import java.util.Scanner;
 
 public class Question {
     private String cityName;
-    private String[] lettersList;
     private String[] answer;
-
+    private String[] lettersList;
+    private static int counter;
+    private static int correctNum;
 
 //    MakeList wholeList = new MakeList();
 
@@ -14,7 +15,8 @@ public class Question {
 //      setCity(wholeList.cityList);
         this.cityName = "vancouver";
         setLettersList(this.cityName);
-        setAnswer(this.cityName);
+        this.answer = new String[this.cityName.length()];
+        this.counter = 0;
     }
 
     // setter
@@ -29,9 +31,8 @@ public class Question {
         }
     }
 
-
-    private void setAnswer(String cityName) {
-        this.answer = new String[cityName.length()];
+    private void setAnswer(String letter, int num) {
+        this.answer[num] = letter;
     }
 
     // getter
@@ -49,7 +50,6 @@ public class Question {
 
     // method
     public void showHiddenQuiz() {
-        System.out.println("Here's a question!");
         for (int i = 0; i < getCity().length(); i++) {
             if (getAnswer()[i] == null) {
                 System.out.print("_");
@@ -58,7 +58,65 @@ public class Question {
             }
         }
         System.out.println();
-        System.out.println("Guess a  letter.");
     }
 
+    public void changeAnswer(String letter) {
+        for (int k = 0; k < getLettersList().length; k++) {
+            if (getLettersList()[k].equals(letter)) {
+                setAnswer(letter, k);
+            }
+        }
+    }
+
+    public void askAnswer() {
+        while (counter < 10) {
+            if (correctNum == getCity().length()) {
+                break;
+            }
+            showHiddenQuiz();
+            changeAnswer(inputLetter());
+            counter++;
+            correctCheck();
+        }
+        if (correctNum == getCity().length()) {
+            gameClear();
+        } else {
+            gameOver();
+
+        }
+    }
+
+    public void correctCheck() {
+        this.correctNum = 0;
+        for (int p = 0; p < getAnswer().length; p++) {
+            if (answer[p] != null) {
+                correctNum++;
+            }
+        }
+    }
+
+    public void gameOver() {
+        System.out.println("You lose!");
+        System.out.println("The correct word is '" + getCity() + "' !");
+
+    }
+
+    public void gameClear() {
+        System.out.println("You win!");
+        System.out.println("You have guessed '" + getCity() + "' correctly!");
+
+    }
+
+    public String inputLetter() {
+        String letter = "";
+        do {
+            if (letter.length() > 1) {
+                System.out.println("Please type just 1 letter!");
+            }
+            Scanner in = new Scanner(System.in);
+            System.out.println("Guess a letter.");
+            letter = in.nextLine();
+        } while (letter.length() != 1);
+        return letter;
+    }
 }
